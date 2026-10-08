@@ -82,3 +82,22 @@ def test_delete_document():
     """Test the delete_document return type."""
     result = delete_document("dummy-id")
     assert isinstance(result, bool)
+
+def test_ingest_file_missing_path():
+    """Test that ingest_file raises FileNotFoundError for a missing path."""
+    with pytest.raises(FileNotFoundError):
+        ingest_file("sample_data/does_not_exist.txt")
+
+
+def test_generate_quiz_zero_items():
+    """Test that requesting zero quiz questions returns an empty list."""
+    result = generate_quiz("dummy-id", n=0)
+    assert isinstance(result, list)
+    assert result == []
+
+
+def test_generate_flashcards_zero_items():
+    """Test that requesting zero flashcards returns an empty list."""
+    result = generate_flashcards("dummy-id", n=0)
+    assert isinstance(result, list)
+    assert result == []

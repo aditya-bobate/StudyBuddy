@@ -1,67 +1,55 @@
-import os
-import uuid
+"""Stable public API used by the StudyBuddy Streamlit application."""
+
+from __future__ import annotations
+
+import logging
+
+from .ingest import delete_document as _delete_document
+from .ingest import ingest_file as _ingest_file
+from .ingest import list_documents as _list_documents
+from .quiz import generate_flashcards as _generate_flashcards
+from .quiz import generate_quiz as _generate_quiz
+from .quiz import summarize as _summarize
+from .rag import answer_question
+
+logger = logging.getLogger(__name__)
 
 
 def ingest_file(path: str) -> dict:
-    """Stub for ingesting a study document."""
-    if not os.path.exists(path):
-        raise FileNotFoundError(f"File not found: {path}")
-    
-    # Simulate basic ingestion
-    return {
-        "doc_id": str(uuid.uuid4()),
-        "name": os.path.basename(path),
-        "chunks": 42
-    }
+    """Ingest a PDF/TXT file and return its document metadata."""
+    return _ingest_file(path)
+
 
 def list_documents() -> list[dict]:
-    """Stub for listing ingested documents."""
-    return [
-        {
-            "doc_id": "dummy-doc-1234",
-            "name": "sample_notes.txt"
-        }
-    ]
+    """List all documents currently stored by StudyBuddy."""
+    return _list_documents()
 
-def ask(question: str, doc_id: str | None = None, top_k: int = 4, history: list[dict] | None = None) -> dict:
-    """Stub for RAG QA."""
-    return {
-        "answer": f"This is a simulated answer to your question: '{question}'",
-        "sources": [
-            {
-                "file": "sample_notes.txt",
-                "page": 1,
-                "snippet": "Simulated source text relevant to the query."
-            }
-        ]
-    }
+
+def ask(
+    question: str,
+    doc_id: str | None = None,
+    top_k: int = 4,
+    history: list[dict] | None = None,
+) -> dict:
+    """Answer a question using retrieval-augmented generation."""
+    return answer_question(question, doc_id=doc_id, top_k=top_k, history=history)
+
 
 def summarize(doc_id: str) -> str:
-    """Stub for summarization."""
-    return "This is a simulated summary of the requested document. It outlines the main concepts covered in the text."
+    """Summarize one stored document."""
+    return _summarize(doc_id)
+
 
 def generate_quiz(doc_id: str, n: int = 5) -> list[dict]:
-    """Stub for generating a multiple-choice quiz."""
-    quiz = []
-    for i in range(n):
-        quiz.append({
-            "question": f"Sample Question {i+1}?",
-            "options": ["Option A", "Option B", "Option C", "Option D"],
-            "answer_index": 0,
-            "explanation": "Option A is correct because of simulated reasons."
-        })
-    return quiz
+    """Generate validated multiple-choice questions from a document."""
+    return _generate_quiz(doc_id, n=n)
+
 
 def generate_flashcards(doc_id: str, n: int = 10) -> list[dict]:
-    """Stub for generating flashcards."""
-    flashcards = []
-    for i in range(n):
-        flashcards.append({
-            "front": f"Sample Concept {i+1}",
-            "back": f"Explanation for Sample Concept {i+1}"
-        })
-    return flashcards
+    """Generate validated flashcards from a document."""
+    return _generate_flashcards(doc_id, n=n)
+
 
 def delete_document(doc_id: str) -> bool:
-    """Stub for deleting a document."""
-    return True
+    """Delete all stored data belonging to a document."""
+    return _delete_document(doc_id)

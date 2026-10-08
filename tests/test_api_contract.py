@@ -1,14 +1,17 @@
 import os
+
 import pytest
+
 from backend.api import (
+    ask,
+    delete_document,
+    generate_flashcards,
+    generate_quiz,
     ingest_file,
     list_documents,
-    ask,
     summarize,
-    generate_quiz,
-    generate_flashcards,
-    delete_document,
 )
+
 
 def test_ingest_file():
     """Test the structure of the ingest_file return dictionary."""

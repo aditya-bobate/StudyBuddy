@@ -1,14 +1,17 @@
 import os
+
 import pytest
 import requests
+
 from backend.api import (
+    ask,
+    generate_flashcards,
+    generate_quiz,
     ingest_file,
     list_documents,
-    ask,
     summarize,
-    generate_quiz,
-    generate_flashcards,
 )
+
 
 def is_ollama_running():
     try:

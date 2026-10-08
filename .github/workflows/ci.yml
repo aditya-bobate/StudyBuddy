@@ -32,4 +32,4 @@ jobs:
       run: |
         # Ollama won't be running in CI by default. 
         # The integration tests should gracefully skip using the @pytest.mark.skipif logic.
-        pytest tests/
+        python -m pytest tests/

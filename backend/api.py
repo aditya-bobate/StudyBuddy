@@ -1,6 +1,6 @@
 import os
 import uuid
-from typing import Optional
+
 
 def ingest_file(path: str) -> dict:
     """Stub for ingesting a study document."""
@@ -23,7 +23,7 @@ def list_documents() -> list[dict]:
         }
     ]
 
-def ask(question: str, doc_id: Optional[str] = None, top_k: int = 4, history: Optional[list[dict]] = None) -> dict:
+def ask(question: str, doc_id: str | None = None, top_k: int = 4, history: list[dict] | None = None) -> dict:
     """Stub for RAG QA."""
     return {
         "answer": f"This is a simulated answer to your question: '{question}'",

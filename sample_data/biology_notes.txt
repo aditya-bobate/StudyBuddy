@@ -1,0 +1,36 @@
+# Introduction to Cellular Biology
+
+Cellular biology is the study of cells, the fundamental units of life. Every living organism is composed of one or more cells. These microscopic structures perform all the essential functions necessary for an organism's survival, growth, and reproduction. Cells are incredibly diverse, yet they share several common characteristics and components.
+
+## The Cell Theory
+
+The foundation of cellular biology is the Cell Theory, which consists of three core principles:
+1. All living organisms are made up of one or more cells.
+2. The cell is the basic unit of structure and organization in organisms.
+3. All cells arise from pre-existing cells through division.
+
+This theory revolutionized the way scientists understood life, moving away from concepts like spontaneous generation.
+
+## Prokaryotic vs. Eukaryotic Cells
+
+Cells are broadly categorized into two types: prokaryotic and eukaryotic.
+
+**Prokaryotic cells** are simpler and smaller. They lack a true, membrane-bound nucleus. Instead, their genetic material (DNA) is located in a nucleoid region. Bacteria and archaea are examples of prokaryotes. They also lack most other membrane-bound organelles, making their internal structure less compartmentalized.
+
+**Eukaryotic cells**, on the other hand, are more complex. They possess a distinct nucleus enclosed by a nuclear envelope, which houses the cell's DNA. Eukaryotes include plants, animals, fungi, and protists. These cells contain numerous specialized, membrane-bound structures called organelles, each performing a specific function.
+
+## Key Organelles in Eukaryotic Cells
+
+1. **Nucleus**: Often called the "control center," it stores the genetic information (DNA) and coordinates cell activities like growth, metabolism, and reproduction.
+2. **Mitochondria**: Known as the "powerhouses" of the cell, mitochondria generate most of the cell's supply of adenosine triphosphate (ATP), used as a source of chemical energy.
+3. **Endoplasmic Reticulum (ER)**: A network of membranous tubules and sacs. The Rough ER is studded with ribosomes and is involved in protein synthesis. The Smooth ER lacks ribosomes and is involved in lipid synthesis and detoxification.
+4. **Golgi Apparatus**: This organelle modifies, sorts, and packages proteins and lipids for transport to their final destinations.
+5. **Lysosomes**: These contain digestive enzymes that break down waste materials and cellular debris.
+6. **Chloroplasts** (only in plant cells and some protists): These are the sites of photosynthesis, where light energy is converted into chemical energy (glucose).
+7. **Cell Membrane**: A semi-permeable phospholipid bilayer that encloses the cell, regulating the passage of substances in and out.
+
+## Cellular Respiration and Energy
+
+Cells require energy to perform work. Cellular respiration is the process by which cells break down glucose to produce ATP. In eukaryotic cells, this process begins in the cytoplasm (glycolysis) and is completed within the mitochondria (Krebs cycle and electron transport chain). This complex series of metabolic pathways ensures a steady supply of energy for the cell.
+
+Understanding cellular biology is crucial for fields ranging from medicine to biotechnology, as it provides the foundation for comprehending how biological systems function at the most fundamental level.

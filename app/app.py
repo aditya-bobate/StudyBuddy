@@ -17,6 +17,7 @@ from backend.api import (  # noqa: F401
     summarize,
 )
 
+
 def main() -> None:
     """Main Streamlit application entry point."""
 

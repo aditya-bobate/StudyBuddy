@@ -4,14 +4,15 @@ import tempfile
 from pathlib import Path
 
 import streamlit as st
+
 from backend.api import (
+    ask,
+    delete_document,
+    generate_flashcards,
+    generate_quiz,
     ingest_file,
     list_documents,
-    ask,
     summarize,
-    generate_quiz,
-    generate_flashcards,
-    delete_document,
 )
 
 st.set_page_config(
@@ -410,7 +411,7 @@ for key, value in defaults.items():
 def get_documents():
     try:
         return list_documents()
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         st.error(f"Could not load documents: {exc}")
         return []
 
@@ -500,7 +501,7 @@ with st.sidebar:
         key="studybuddy_uploader",
     )
 
-    if uploaded_file is not None:
+    if uploaded_file is not None:  # noqa: SIM102
         if st.button("＋  Import document", use_container_width=True):
             suffix = Path(uploaded_file.name).suffix.lower()
             temp_path = None
@@ -522,7 +523,7 @@ with st.sidebar:
                 )
                 st.rerun()
 
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 st.error(f"Import failed: {exc}")
 
             finally:
@@ -596,7 +597,7 @@ with st.sidebar:
                         st.rerun()
                     else:
                         st.error("Document was not found or could not be deleted.")
-                except Exception as exc:
+                except Exception as exc:  # noqa: BLE001
                     st.error(f"Delete failed: {exc}")
 
     else:
@@ -662,7 +663,7 @@ with c1:
 
 with c2:
     st.markdown(
-        f"""<div class="stat-card">
+        """<div class="stat-card">
         <div class="stat-icon">✨</div>
         <div class="stat-label">AI study tools</div>
         <div class="stat-value">04</div>
@@ -731,7 +732,7 @@ with chat_tab:
                 for item in st.session_state.chat_history[:-1]
             ]
 
-            with st.chat_message("assistant"):
+            with st.chat_message("assistant"):  # noqa: SIM117
                 with st.spinner("✦ Thinking through your notes..."):
                     try:
                         result = ask(
@@ -755,7 +756,7 @@ with chat_tab:
                             }
                         )
 
-                    except Exception as exc:
+                    except Exception as exc:  # noqa: BLE001
                         st.error(f"Couldn't answer that question: {exc}")
 
 
@@ -793,13 +794,13 @@ with summary_tab:
             try:
                 with st.spinner("Creating your revision guide..."):
                     st.session_state.last_summary = summarize(doc["doc_id"])
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 st.error(f"Summary generation failed: {exc}")
 
         if st.session_state.last_summary:
             st.markdown('<div class="section-label">YOUR REVISION GUIDE</div>', unsafe_allow_html=True)
             st.markdown(
-                f'<div class="panel" style="line-height:1.9">',
+                '<div class="panel" style="line-height:1.9">',
                 unsafe_allow_html=True,
             )
             st.markdown(st.session_state.last_summary)
@@ -856,7 +857,7 @@ with quiz_tab:
                 st.session_state.quiz_submitted = False
                 st.success(f"Created {len(quiz)} question(s).")
 
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 st.error(f"Quiz generation failed: {exc}")
 
         quiz = st.session_state.last_quiz
@@ -981,7 +982,7 @@ with cards_tab:
                         doc["doc_id"], n=card_count
                     )
                     st.session_state.flash_revealed = set()
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 st.error(f"Flashcard generation failed: {exc}")
 
         cards = st.session_state.last_flashcards
@@ -996,7 +997,7 @@ with cards_tab:
             cols = st.columns(2)
 
             for i, card in enumerate(cards):
-                with cols[i % 2]:
+                with cols[i % 2]:  # noqa: SIM117
                     with st.container(border=True):
                         st.markdown(
                             f'<div class="flashcard-front">CARD {i + 1:02d}</div>'

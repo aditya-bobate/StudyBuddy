@@ -11,6 +11,7 @@ from backend.api import (
     list_documents,
     summarize,
 )
+from backend.errors import OllamaNotRunning
 
 
 def test_ingest_file():
@@ -18,8 +19,12 @@ def test_ingest_file():
     sample_path = "sample_data/biology_notes.txt"
     if not os.path.exists(sample_path):
         pytest.skip("Sample data missing.")
-        
-    result = ingest_file(sample_path)
+
+    try:
+        result = ingest_file(sample_path)
+    except OllamaNotRunning:
+        pytest.skip("Ollama is not running")
+
     assert isinstance(result, dict)
     assert "doc_id" in result
     assert "name" in result
@@ -40,7 +45,11 @@ def test_list_documents():
 
 def test_ask():
     """Test the structure of the ask return dictionary."""
-    result = ask("What is the cell theory?")
+    try:
+        result = ask("What is the cell theory?")
+    except OllamaNotRunning:
+        pytest.skip("Ollama is not running")
+
     assert isinstance(result, dict)
     assert "answer" in result
     assert "sources" in result
@@ -63,6 +72,8 @@ def test_summarize(sample_doc_id):
     """Test the summarize return type."""
     result = summarize(sample_doc_id)
     assert isinstance(result, str)
+    with pytest.raises(ValueError, match="Document 'dummy-id' was not found."):
+        summarize("dummy-id")
 
 def test_generate_quiz(sample_doc_id):
     """Test the structure of the generate_quiz return list."""
@@ -76,6 +87,8 @@ def test_generate_quiz(sample_doc_id):
         assert "explanation" in q
         assert isinstance(q["options"], list)
         assert len(q["options"]) == 4
+    with pytest.raises(ValueError, match="Document 'dummy-id' was not found."):
+        generate_quiz("dummy-id", n=3)
 
 def test_generate_flashcards(sample_doc_id):
     """Test the structure of the generate_flashcards return list."""
@@ -85,6 +98,8 @@ def test_generate_flashcards(sample_doc_id):
     for card in result:
         assert "front" in card
         assert "back" in card
+    with pytest.raises(ValueError, match="Document 'dummy-id' was not found."):
+        generate_flashcards("dummy-id", n=2)
 
 def test_delete_document(sample_doc_id):
     """Test the delete_document return type."""

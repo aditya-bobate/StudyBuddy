@@ -11,6 +11,7 @@ from backend.api import (
     list_documents,
     summarize,
 )
+from backend.errors import OllamaNotRunning
 
 
 def test_ingest_file():
@@ -19,7 +20,11 @@ def test_ingest_file():
     if not os.path.exists(sample_path):
         pytest.skip("Sample data missing.")
         
-    result = ingest_file(sample_path)
+    try:
+        result = ingest_file(sample_path)
+    except OllamaNotRunning:
+        pytest.skip("Ollama is not running")
+        
     assert isinstance(result, dict)
     assert "doc_id" in result
     assert "name" in result
@@ -40,7 +45,11 @@ def test_list_documents():
 
 def test_ask():
     """Test the structure of the ask return dictionary."""
-    result = ask("What is the cell theory?")
+    try:
+        result = ask("What is the cell theory?")
+    except OllamaNotRunning:
+        pytest.skip("Ollama is not running")
+        
     assert isinstance(result, dict)
     assert "answer" in result
     assert "sources" in result

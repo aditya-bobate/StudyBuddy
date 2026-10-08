@@ -1,0 +1,21 @@
+# Environments
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Data & Models
+.chroma/
+.ollama/
+models/
+
+# Cache & Temp
+.cache/
+.tmp/
+.pip-cache/
+
+# Environment variables
+.env
+
+# Logs
+*.log

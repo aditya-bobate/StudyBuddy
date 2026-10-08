@@ -51,14 +51,22 @@ def test_ask():
         assert "page" in source
         assert "snippet" in source
 
-def test_summarize():
+@pytest.fixture(scope="module")
+def sample_doc_id():
+    sample_path = "sample_data/biology_notes.txt"
+    if not os.path.exists(sample_path):
+        pytest.skip("Sample data missing.")
+    res = ingest_file(sample_path)
+    return res["doc_id"]
+
+def test_summarize(sample_doc_id):
     """Test the summarize return type."""
-    result = summarize("dummy-id")
+    result = summarize(sample_doc_id)
     assert isinstance(result, str)
 
-def test_generate_quiz():
+def test_generate_quiz(sample_doc_id):
     """Test the structure of the generate_quiz return list."""
-    result = generate_quiz("dummy-id", n=3)
+    result = generate_quiz(sample_doc_id, n=3)
     assert isinstance(result, list)
     assert len(result) == 3
     for q in result:
@@ -69,18 +77,18 @@ def test_generate_quiz():
         assert isinstance(q["options"], list)
         assert len(q["options"]) == 4
 
-def test_generate_flashcards():
+def test_generate_flashcards(sample_doc_id):
     """Test the structure of the generate_flashcards return list."""
-    result = generate_flashcards("dummy-id", n=2)
+    result = generate_flashcards(sample_doc_id, n=2)
     assert isinstance(result, list)
     assert len(result) == 2
     for card in result:
         assert "front" in card
         assert "back" in card
 
-def test_delete_document():
+def test_delete_document(sample_doc_id):
     """Test the delete_document return type."""
-    result = delete_document("dummy-id")
+    result = delete_document(sample_doc_id)
     assert isinstance(result, bool)
 
 def test_ingest_file_missing_path():

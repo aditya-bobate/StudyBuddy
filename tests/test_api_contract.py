@@ -68,7 +68,10 @@ def sample_doc_id():
     sample_path = "sample_data/biology_notes.txt"
     if not os.path.exists(sample_path):
         pytest.skip("Sample data missing.")
-    res = ingest_file(sample_path)
+    try:
+        res = ingest_file(sample_path)
+    except OllamaNotRunning:
+        pytest.skip("Ollama is not available in this environment.")
     return res["doc_id"]
 
 

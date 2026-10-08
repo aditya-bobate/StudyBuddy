@@ -88,7 +88,11 @@ Study material:
             raise TypeError("The model returned an invalid quiz item.")
         options = item.get("options")
         answer_index = item.get("answer_index")
-        if not isinstance(item.get("question"), str) or not isinstance(options, list) or len(options) != 4:
+        if (
+            not isinstance(item.get("question"), str)
+            or not isinstance(options, list)
+            or len(options) != 4
+        ):
             raise ValueError("The model returned an invalid quiz item.")
         if not isinstance(answer_index, int) or not 0 <= answer_index <= 3:
             raise ValueError("The model returned an invalid answer index.")
@@ -122,7 +126,11 @@ Study material:
         raise ValueError("The model returned an invalid flashcard structure.")
     validated = []
     for item in data:
-        if not isinstance(item, dict) or not isinstance(item.get("front"), str) or not isinstance(item.get("back"), str):
+        if (
+            not isinstance(item, dict)
+            or not isinstance(item.get("front"), str)
+            or not isinstance(item.get("back"), str)
+        ):
             raise TypeError("The model returned an invalid flashcard item.")
         validated.append({"front": item["front"], "back": item["back"]})
     return validated

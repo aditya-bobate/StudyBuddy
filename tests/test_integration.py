@@ -22,6 +22,7 @@ def is_ollama_running():
     except requests.ConnectionError:
         return False
 
+
 @pytest.mark.skipif(not is_ollama_running(), reason="Ollama is not available.")
 def test_full_integration_flow():
     """Test the end-to-end integration flow."""
@@ -31,6 +32,7 @@ def test_full_integration_flow():
 
     # Create a dummy PDF file for testing PDF ingestion
     from pypdf import PdfWriter
+
     dummy_pdf_path = "sample_data/dummy.pdf"
     writer = PdfWriter()
     writer.add_blank_page(width=72, height=72)

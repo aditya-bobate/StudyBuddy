@@ -22,7 +22,10 @@ def answer_question(
     """Retrieve relevant chunks and generate a grounded answer with sources."""
     matches = search_chunks(question, doc_id=doc_id, top_k=top_k)
     if not matches:
-        return {"answer": "I could not find relevant information in the uploaded material.", "sources": []}
+        return {
+            "answer": "I could not find relevant information in the uploaded material.",
+            "sources": [],
+        }
 
     context = "\n\n".join(
         f"[Source {i}] File: {item['file']} | Page: {item['page']}\n{item['text']}"

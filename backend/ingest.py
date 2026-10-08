@@ -92,10 +92,11 @@ def ingest_file(path: str) -> dict:
     doc_id = _make_doc_id(file_path)
     texts = [text for text, _ in chunks]
     vectors = embed(texts)
-    ids = [hashlib.sha1(f"{doc_id}:{i}".encode()).hexdigest() for i in range(len(texts))]
+    ids = [
+        hashlib.sha1(f"{doc_id}:{i}".encode()).hexdigest() for i in range(len(texts))
+    ]
     metadatas = [
-        {"doc_id": doc_id, "file": file_path.name, "page": page}
-        for _, page in chunks
+        {"doc_id": doc_id, "file": file_path.name, "page": page} for _, page in chunks
     ]
 
     _collection.add(
@@ -165,9 +166,17 @@ def get_document_chunks(doc_id: str) -> list[dict]:
         include=["documents", "metadatas"],
     )
     rows = []
-    for text, metadata in zip(result.get("documents") or [], result.get("metadatas") or []):
+    for text, metadata in zip(
+        result.get("documents") or [], result.get("metadatas") or []
+    ):
         if metadata:
-            rows.append({"text": text, "file": metadata.get("file", "unknown"), "page": int(metadata.get("page", 1))})
+            rows.append(
+                {
+                    "text": text,
+                    "file": metadata.get("file", "unknown"),
+                    "page": int(metadata.get("page", 1)),
+                }
+            )
     return rows
 
 

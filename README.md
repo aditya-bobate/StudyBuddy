@@ -1,314 +1,165 @@
-# StudyBuddy
-
-StudyBuddy is an open-source, fully offline AI study assistant powered by local LLMs. Upload your study notes, ask questions, generate summaries, quizzes, and flashcards — all without sending your study documents to a cloud LLM.
-
-## Features
-
-- **Document Ingestion** — Upload PDF or TXT study notes.
-- **RAG Question Answering** — Ask questions and get answers grounded in your documents.
-- **Source Citations** — Verify answers using source snippets and page numbers.
-- **Auto-Summarization** — Generate concise summaries of study material.
-- **Smart Quizzes** — Generate multiple-choice quizzes from documents.
-- **Flashcards** — Automatically create flashcards from key concepts.
-- **Offline & Private** — Uses Ollama to run supported models locally.
-
-## Architecture
-
-StudyBuddy uses a modular Python stack:
-
-- **Frontend:** Streamlit
-- **Backend:** Python 3.10+
-- **Vector Database:** ChromaDB
-- **Embeddings:** `nomic-embed-text`
-- **LLM Engine:** Ollama with `gemma3:4b`
-
-See [docs/architecture.md](docs/architecture.md) for the project architecture.
-
-## Requirements
-
-- Windows 10/11
-- Python 3.10+
-- Ollama
-- `gemma3:4b` Ollama model
-- `nomic-embed-text` Ollama model
-
-## Installation
-
-### Windows Setup
-
-#### 1. Install Ollama
-
-Install Ollama from [ollama.com](https://ollama.com).
-
-#### 2. Clone the Repository
-
-```powershell
-git clone https://github.com/aditya-bobate/StudyBuddy.git
-cd StudyBuddy
-```
-
-#### 3. Run the Setup Script
-
-```powershell
-.\setup.ps1
-```
-
-Alternatively, you can use:
-
-```text
-setup.bat
-```
-
-or:
-
-```text
-setup.sh
-```
-
-on compatible Unix-like systems.
-
-#### 4. Configure Environment Variables
-
-Copy `.env.example` to `.env` and adjust the values if required.
-
-### Required Ollama Models
-
-Make sure the required models are available locally:
-
-```powershell
-ollama pull gemma3:4b
-ollama pull nomic-embed-text
-```
-
-After the required models are downloaded, StudyBuddy can perform supported document processing and inference locally without sending study documents to a cloud LLM.
-
-## Usage
-
-### 1. Start Ollama
-
-Start Ollama if it is not already running.
-
-### 2. Activate the Virtual Environment
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-```
-
-### 3. Start the Application
-
-```powershell
-streamlit run app/app.py
-```
-
-Open the local Streamlit URL shown in the terminal.
-
-## API Contract
-
-The backend exposes a stable API contract through `backend/api.py`.
-
-The current implementation contains deterministic stubs so the frontend can be developed independently of the AI backend.
-
-### `ingest_file`
-
-```python
-ingest_file(path: str) -> dict
-```
-
-Returns:
-
-```json
-{
-  "doc_id": "string",
-  "name": "string",
-  "chunks": 42
-}
-```
-
-### `list_documents`
-
-```python
-list_documents() -> list[dict]
-```
-
-Returns:
-
-```json
-[
-  {
-    "doc_id": "string",
-    "name": "string"
-  }
-]
-```
-
-### `ask`
-
-```python
-ask(
-    question: str,
-    doc_id: str | None = None,
-    top_k: int = 4,
-    history: list[dict] | None = None
-) -> dict
-```
-
-Returns:
-
-```json
-{
-  "answer": "string",
-  "sources": [
-    {
-      "file": "string",
-      "page": 1,
-      "snippet": "string"
-    }
-  ]
-}
-```
-
-The `page` value may be `null` when a source does not have a page number.
-
-### `summarize`
-
-```python
-summarize(doc_id: str) -> str
-```
-
-Returns a summary string.
-
-### `generate_quiz`
-
-```python
-generate_quiz(doc_id: str, n: int = 5) -> list[dict]
-```
-
-Each quiz item contains:
-
-```json
-{
-  "question": "string",
-  "options": [
-    "string",
-    "string",
-    "string",
-    "string"
-  ],
-  "answer_index": 0,
-  "explanation": "string"
-}
-```
-
-`answer_index` is zero-based and must be between `0` and `3`.
-
-### `generate_flashcards`
-
-```python
-generate_flashcards(doc_id: str, n: int = 10) -> list[dict]
-```
-
-Each flashcard contains:
-
-```json
-{
-  "front": "string",
-  "back": "string"
-}
-```
-
-### `delete_document`
-
-```python
-delete_document(doc_id: str) -> bool
-```
-
-Returns a boolean indicating whether the deletion succeeded.
-
-> These contracts are intentionally stable so the Streamlit frontend can be developed independently of the AI implementation.
-
-## Project Structure
+# 📚 StudyBuddy — Your Personal AI Study Space
+
+**Turn your study notes into answers, summaries, quizzes, and flashcards with locally running AI.**
+
+StudyBuddy is an AI-powered study assistant built with Python and Streamlit. Upload your PDF or TXT notes, ask questions about the material, generate revision summaries, practise multiple-choice quizzes, and create flashcards—all through a clean, modern interface.
+
+The application uses Ollama to run language and embedding models locally, with ChromaDB for document storage and semantic retrieval.
+
+## ✨ Features
+
+- **Document Upload:** Import PDF and TXT study notes.
+- **AI Study Chat:** Ask questions about uploaded material and view supporting source snippets with file and page information.
+- **Smart Summaries:** Generate concise revision notes from a selected document.
+- **Interactive Quizzes:** Create multiple-choice questions with four options, answer checking, and explanations.
+- **Flashcard Studio:** Generate question-and-answer cards, reveal answers, and export your deck.
+- **Document Library:** View, select, and delete stored documents.
+- **Modern Interface:** Dark theme, gradient styling, responsive layout, and dedicated study-tool tabs.
+- **Local AI:** Run generation and embedding models through your local Ollama service.
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| Python | Application and backend logic |
+| Streamlit | Interactive web interface |
+| Ollama | Local language-model and embedding-model runtime |
+| Gemma 3 4B | Answer generation, summaries, quizzes, and flashcards |
+| nomic-embed-text | Text embeddings for semantic retrieval |
+| ChromaDB | Vector storage and similarity search |
+| pypdf | PDF text extraction |
+| pytest | Automated tests |
+| Ruff | Linting and code formatting |
+
+## 🏗️ Architecture
+
+1. **Upload:** The user imports a study document.
+2. **Extract and chunk:** The backend extracts text, keeps page information, and splits the text into chunks.
+3. **Embed and store:** The embedding model transforms chunks into vectors stored in ChromaDB.
+4. **Retrieve:** When the user asks a question, relevant chunks are retrieved from the document collection.
+5. **Generate:** Ollama generates a response using the retrieved context, or creates a summary, quiz, or flashcard deck.
+6. **Display:** Streamlit presents the result in the study workspace.
+
+## 📁 Project Structure
 
 ```text
 StudyBuddy/
 ├── app/
-│   ├── app.py
-│   └── components/
+│   └── app.py
 ├── backend/
-│   ├── __init__.py
 │   ├── api.py
 │   ├── errors.py
 │   ├── ingest.py
 │   ├── llm.py
 │   ├── quiz.py
 │   └── rag.py
-├── docs/
-│   ├── architecture.md
-│   └── DEMO.md
-├── sample_data/
-│   └── biology_notes.txt
 ├── tests/
 │   ├── test_api_contract.py
 │   └── test_integration.py
-├── .github/
-│   ├── ISSUE_TEMPLATE/
-│   ├── pull_request_template.md
-│   └── workflows/
-├── .env.example
-├── .gitignore
-├── CONTRIBUTING.md
-├── LICENSE
 ├── requirements.txt
-├── setup.bat
-├── setup.ps1
-└── setup.sh
+└── README.md
 ```
 
-## Testing
+## 🚀 Getting Started
 
-Run the complete test suite:
+### Prerequisites
 
-```powershell
-python -m pytest -v
+- Python 3.11 or a compatible Python version
+- [Ollama](https://ollama.com/)
+- Sufficient disk space and memory for the selected local models
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/aditya-bobate/StudyBuddy.git
+cd StudyBuddy
 ```
 
-The integration test requires Ollama to be running. If Ollama is unavailable, the integration test is skipped automatically.
+### 2. Create and activate a virtual environment
 
-Run only the API contract tests:
+**macOS / Linux**
 
-```powershell
-python -m pytest tests/test_api_contract.py -v
+```bash
+python3.11 -m venv .venv
+source .venv/bin/activate
 ```
 
-## Sample Data
+### 3. Install dependencies
 
-A small original biology study-notes file is included at:
-
-```text
-sample_data/biology_notes.txt
+```bash
+python -m pip install --upgrade pip
+pip install -r requirements.txt
 ```
 
-It can be used to test document ingestion and the application workflow without requiring external study material.
+### 4. Download the required models
 
-## Demo
+```bash
+ollama pull gemma3:4b
+ollama pull nomic-embed-text
+```
 
-See [docs/DEMO.md](docs/DEMO.md) for the recommended demonstration flow.
+Ensure the Ollama service is running before starting the application.
 
-## Contributing
+### 5. Run StudyBuddy
 
-Contributions are welcome.
+```bash
+python -m streamlit run app/app.py
+```
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening an issue or pull request.
+Open the local URL displayed by Streamlit, typically `http://localhost:8501`.
 
-The project follows an issue-first workflow with feature branches, pull requests, CI checks, and peer review.
+### 6. Start studying
 
-## Privacy
+Upload a PDF or TXT file from the sidebar, select it from your library, and use the Chat, Summary, Quiz, and Flashcards tabs.
 
-StudyBuddy is designed around local processing.
+## 🧪 Testing and Code Quality
 
-Once the required models are downloaded, supported document processing and model inference can run locally through Ollama. Study documents are not intentionally uploaded to a cloud LLM by StudyBuddy.
+Run the automated test suite:
 
-## License
+```bash
+python -m pytest tests/ -q
+```
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE).
+Run the linter:
 
-The AI models used by StudyBuddy retain their respective licenses and terms of use. For example, Gemma has its own model license and terms.
+```bash
+ruff check .
+```
+
+Format the code when needed:
+
+```bash
+ruff format .
+```
+
+Tests that require Ollama must be run with Ollama available. The CI environment should skip tests that depend on a local Ollama service when that service is unavailable.
+
+## 🔒 Privacy and Data
+
+StudyBuddy is designed around local AI processing. Once the models are downloaded, prompts and document processing can use your local Ollama service rather than a hosted AI API.
+
+- Documents and vector data are stored locally by default.
+- The ChromaDB storage location can be configured with `STUDYBUDDY_CHROMA_PATH`.
+- Model downloads and Python package installation require internet access.
+- Protect your local documents, database, and any sensitive material as you would other files on your computer.
+
+The default local configuration is not automatically a public cloud deployment. A hosted deployment needs an appropriate model runtime, storage configuration, and resource allocation.
+
+## 🗺️ Future Improvements
+
+- Improved document organization and search
+- Study progress tracking and learning statistics
+- More quiz modes and spaced-repetition flashcards
+- Better handling of scanned PDFs with optional OCR
+- Automated CI checks and expanded test coverage
+- Deployment configuration for a suitable hosted environment
+
+## 👨‍💻 Author
+
+**Yug Gandhi**
+
+Built as a project to explore local language models, retrieval-augmented generation, vector databases, and AI-assisted learning.
+
+## 📄 License
+
+Add a license before redistributing this project publicly. Until a license is included, do not assume others have permission to reuse the code.

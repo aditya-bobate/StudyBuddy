@@ -156,10 +156,14 @@ The default local configuration is not automatically a public cloud deployment. 
 
 ## 👨‍💻 Author
 
-**Yug Gandhi**
+## 👥 Team
 
-Built as a project to explore local language models, retrieval-augmented generation, vector databases, and AI-assisted learning.
+**Git Gooners**
+
+- Aditya Bobate
+- Yug Gandhi
+- Anand Purohit
 
 ## 📄 License
 
-Add a license before redistributing this project publicly. Until a license is included, do not assume others have permission to reuse the code.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

@@ -154,16 +154,14 @@ The default local configuration is not automatically a public cloud deployment. 
 - Automated CI checks and expanded test coverage
 - Deployment configuration for a suitable hosted environment
 
-## 👨‍💻 Author
+## 👥 Team — Git Gooners
 
-## 👥 Team
+- **Aditya Bobate**
+- **Yug Gandhi**
+- **Anand Purohit**
 
-**Git Gooners**
-
-- Aditya Bobate
-- Yug Gandhi
-- Anand Purohit
+Built collaboratively for the Hacktoberfest × MUJ challenge, StudyBuddy explores local language models, retrieval-augmented generation (RAG), vector databases, and AI-assisted learning.
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+StudyBuddy is licensed under the MIT License. See the [LICENSE](LICENSE) file for the full license text.
